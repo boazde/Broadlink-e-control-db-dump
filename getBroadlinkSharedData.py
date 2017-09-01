@@ -56,10 +56,13 @@ jsonIrCodeData = json.loads(jsonIrCode)
 
 print "[+] Dumping codes to " + accessory_name + ".txt"
 codesFile = open(accessory_name + '.txt', 'w')
+codesFile2 = open(accessory_name + '_b64.txt', 'w')
 
 for i in range(0, len(jsonIrCodeData)):
     for j in range(0, len(buttonIDS)):
         if jsonIrCodeData[i]['buttonId'] == buttonIDS[j]:
             code = ''.join('%02x' % (i & 0xff) for i in jsonIrCodeData[i]['code'])
             result = "Button Name: " + buttonNames[j] + " | Button ID: " + str(jsonIrCodeData[i]['buttonId']) + " | Code: " + code
+            result2 = "Button Name: " + buttonNames[j] + " | Button ID: " + str(jsonIrCodeData[i]['buttonId'])
             codesFile.writelines(result.encode('utf-8'))
+            codesFile2.writelines(result2.encode('utf-8')+' Code :\n'+ code.encode('utf-8')+'\n'+code.decode("hex").encode("base64").replace('\n', '')+'\n')
